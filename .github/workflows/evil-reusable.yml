@@ -14,8 +14,8 @@ jobs:
           cat > /tmp/pub/package.json << 'PKGEOF'
           {
             "name": "@giga-gap-bb/h4-oidc-test",
-            "version": "1.0.4",
-            "description": "H4 REF-PINNING TEST - published via cross-repo reusable workflow (job_workflow_ref NOT checked by npm)",
+            "version": "1.0.5",
+            "description": "H4 ENVIRONMENT-LENIENT TEST - published via cross-repo reusable workflow (job_workflow_ref NOT checked by npm)",
             "license": "MIT",
             "repository": {
               "type": "git",
